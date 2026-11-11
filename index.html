@@ -1,0 +1,568 @@
+<?php
+/**
+ * แผนกเทคโนโลยีสารสนเทศ - สถาบันการอาชีวศึกษา
+ * รายงานและระบบแสดงข้อมูลหลักสูตรการจัดการเรียนการสอน
+ * สดและประมวลผลด้วยภาษา PHP
+ */
+
+// ข้อมูลเกี่ยวกับแผนกวิชา
+$department = [
+    'name_th' =>
+'สาขาวิชาเทคโนโลยีสารสนเทศ', 'name_en' => 'Department of Information
+Technology', 'organization' => 'สถาบันการอาชีวศึกษา
+สำนักงานคณะกรรมการการอาชีวศึกษา (สอศ.)', 'description' =>
+'มุ่งเน้นการจัดการเรียนการสอนเพื่อสร้างนักพัฒนาระบบ นักพัฒนาเว็บแอปพลิเคชัน
+ผู้ดูแลระบบฐานข้อมูล
+และบุคลากรวิชาชีพด้านเทคโนโลยีสารสนเทศที่มีสมรรถนะสูงสอดคล้องกับมาตรฐานอาชีพ',
+'careers' => [ 'นักพัฒนาระบบและซอฟต์แวร์ (System & Software Developer)',
+'นักพัฒนาเว็บแอปพลิเคชัน (Web Application Developer)',
+'นักออกแบบและบริหารจัดการฐานข้อมูล (Database Administrator)',
+'ผู้เชี่ยวชาญด้านเครือข่ายและระบบเซิร์ฟเวอร์ (Network & Server Administrator)',
+'นักออกแบบ UI/UX และสื่อดิจิทัล (UI/UX & Digital Media Designer)',
+'ผู้ประกอบการดิจิทัล (Digital Entrepreneur)' ] ]; //
+ข้อมูลหลักสูตรตามระดับการศึกษา $curriculums = [ 'pvc' => [ 'level_code' =>
+'ปวช.', 'title' => 'หลักสูตรประกาศนียบัตรวิชาชีพ (ปวช.) พ.ศ. 2567', 'sub_title'
+=> 'ประเภทวิชาอุตสาหกรรมดิจิทัลและเทคโนโลยีสารสนเทศ |
+กลุ่มอาชีพซอฟต์แวร์และการประยุกต์', 'credits' => 'ไม่น้อยกว่า 100 หน่วยกิต',
+'duration' => '3 ปี (หลังจบ ม.3)', 'qualification' => 'คุณวุฒิวิชาชีพ ระดับ 3
+(นักพัฒนาระบบ / ช่างสนับสนุนด้านเทคนิค)', 'structure' => [
+'หมวดวิชาสมรรถนะแกนกลาง (20 หน่วยกิต)' => 'ภาษาและการสื่อสาร,
+การคิดและการแก้ปัญหา (วิทยาศาสตร์/คณิตศาสตร์), ทางสังคมและการดำรงชีวิต',
+'หมวดวิชาสมรรถนะวิชาชีพ (70 หน่วยกิต)' => 'กลุ่มสมรรถนะวิชาชีพพื้นฐาน (20
+หน่วยกิต) และวิชาชีพเฉพาะ (50 หน่วยกิต)', 'หมวดวิชาเลือกเสรี (10 หน่วยกิต)' =>
+'เลือกเรียนตามความถนัดและยุทธศาสตร์ภูมิภาค' ], 'courses' => [ ['code' =>
+'21900-1001', 'name' => 'การเขียนโปรแกรมคอมพิวเตอร์ (Computer Programming)',
+'type' => 'พื้นฐานวิชาชีพ', 'credit' => '1-2-2'], ['code' => '21900-1002',
+'name' => 'โครงสร้างข้อมูลและอัลกอริทึมเบื้องต้น (Basic Data Structures)',
+'type' => 'พื้นฐานวิชาชีพ', 'credit' => '1-2-2'], ['code' => '21900-1003',
+'name' => 'การออกแบบและจัดการฐานข้อมูล (Database Design & Management)', 'type'
+=> 'พื้นฐานวิชาชีพ', 'credit' => '1-2-2'], ['code' => '21900-1005', 'name' =>
+'เครือข่ายคอมพิวเตอร์ (Computer Network)', 'type' => 'พื้นฐานวิชาชีพ', 'credit'
+=> '1-2-2'], ['code' => '21901-2001', 'name' =>
+'ภาษาสอบถามข้อมูลเชิงโครงสร้างเบื้องต้น (Basic SQL)', 'type' => 'วิชาชีพเฉพาะ',
+'credit' => '1-2-2'], ['code' => '21901-2002', 'name' => 'การสร้างเว็บไซต์
+(Website Creating)', 'type' => 'วิชาชีพเฉพาะ', 'credit' => '1-4-3'], ['code' =>
+'21901-2003', 'name' => 'การพัฒนาเว็บแอปพลิเคชัน (Web Based Application
+Development)', 'type' => 'วิชาชีพเฉพาะ', 'credit' => '1-4-3'], ['code' =>
+'21901-2007', 'name' => 'เทคโนโลยีระบบสมองกลฝังตัวและไอโอที (Embedded System &
+IoT)', 'type' => 'วิชาชีพเฉพาะ', 'credit' => '1-2-2'], ['code' => '21901-2008',
+'name' => 'การออกแบบส่วนติดต่อผู้ใช้ (UX/UI Design)', 'type' => 'วิชาชีพเฉพาะ',
+'credit' => '1-2-2'], ['code' => '21901-2011', 'name' =>
+'การพัฒนาแอปพลิเคชันบนอุปกรณ์เคลื่อนที่ (Mobile App Dev)', 'type' =>
+'วิชาชีพเฉพาะ', 'credit' => '1-4-3'], ['code' => '21901-2014', 'name' =>
+'ระบบปฏิบัติการเครื่องแม่ข่ายเบื้องต้น (Basic NOS for Server)', 'type' =>
+'วิชาชีพเฉพาะ', 'credit' => '1-4-3'] ] ], 'pvs' => [ 'level_code' => 'ปวส.',
+'title' => 'หลักสูตรประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.) พ.ศ. 2567', 'sub_title'
+=> 'ประเภทวิชาอุตสาหกรรมดิจิทัลและเทคโนโลยีสารสนเทศ |
+กลุ่มอาชีพซอฟต์แวร์และการประยุกต์', 'credits' => 'ไม่น้อยกว่า 80 หน่วยกิต',
+'duration' => '2 ปี (ต่อยอดจาก ปวช. IT หรือ ม.6)', 'qualification' =>
+'คุณวุฒิวิชาชีพ ระดับ 4 / นักวิเคราะห์และพัฒนาระบบขั้นสูง', 'structure' => [
+'หมวดปรับพื้นฐานวิชาชีพ (15 หน่วยกิต)' => 'สำหรับผู้จบ ม.6 หรือต่างสาขา
+(การสร้างเว็บ, โปรแกรมมิ่ง, ฐานข้อมูล, คอมพิวเตอร์)', 'หมวดวิชาสมรรถนะแกนกลาง
+(15 หน่วยกิต)' => 'ทักษะภาษาอังกฤษเชิงอุตสาหกรรมดิจิทัล, คณิตศาสตร์/แคลคูลัส,
+การจัดการในยุคดิจิทัล', 'หมวดวิชาสมรรถนะวิชาชีพ (60 หน่วยกิต)' =>
+'วิชาชีพพื้นฐาน (15 หน่วยกิต) และวิชาชีพเฉพาะ/ทวิภาคี (45 หน่วยกิต)' ],
+'courses' => [ ['code' => '31900-0001', 'name' => 'การสร้างเว็บไซต์ (Website
+Development)', 'type' => 'ปรับพื้นฐานวิชาชีพ', 'credit' => '1-4-3'], ['code' =>
+'31900-0002', 'name' => 'การเขียนโปรแกรมคอมพิวเตอร์ (Computer Programming)',
+'type' => 'ปรับพื้นฐานวิชาชีพ', 'credit' => '1-4-3'], ['code' => '31900-0003',
+'name' => 'ระบบฐานข้อมูลและการประยุกต์ (Database Systems & Apps)', 'type' =>
+'ปรับพื้นฐานวิชาชีพ', 'credit' => '1-4-3'], ['code' => '31900-1002', 'name' =>
+'การจัดการข้อมูลขนาดใหญ่เบื้องต้น (Introduction to Big Data)', 'type' =>
+'สมรรถนะวิชาชีพ', 'credit' => '1-2-2'], ['code' => '31905-2012', 'name' =>
+'การพัฒนาเกมบนเว็บ (Web Browser Game Development)', 'type' =>
+'สมรรถนะวิชาชีพเฉพาะ', 'credit' => '1-4-3'], ['code' => '31900-1001', 'name' =>
+'กฎหมายในงานอาชีพอุตสาหกรรมดิจิทัลและ IT', 'type' => 'สมรรถนะวิชาชีพ', 'credit'
+=> '1-0-1'], ['code' => '30001-1003', 'name' =>
+'การประยุกต์ใช้เทคโนโลยีดิจิทัลในอาชีพ (Digital Literacy)', 'type' =>
+'สมรรถนะวิชาชีพ', 'credit' => '2-2-3'] ] ], 'tlb' => [ 'level_code' => 'ทล.บ.',
+'title' => 'หลักสูตรเทคโนโลยีบัณฑิต (ทล.บ.) สาขาวิชาเทคโนโลยีสารสนเทศ',
+'sub_title' => 'หลักสูตรปริญญาตรีสายปฏิบัติการ (ต่อเนื่อง 2 ปี)
+สถาบันการอาชีวศึกษา', 'credits' => '75 หน่วยกิตตลอดหลักสูตร', 'duration' => '2
+ปี (ต่อยอดจาก ปวส. เทคโนโลยีสารสนเทศ)', 'qualification' =>
+'ปริญญาเทคโนโลยีบัณฑิต (ทล.บ. เทคโนโลยีสารสนเทศ / B.Tech IT)', 'structure' => [
+'หมวดวิชาคุณลักษณะที่พึงประสงค์' => 'ภาษาอังกฤษเพื่อวิชาชีพขั้นสูง,
+ทักษะบริหารจัดการองค์กร', 'หมวดวิชาเฉพาะด้านเทคโนโลยีสารสนเทศ' =>
+'สถาปัตยกรรมซอฟต์แวร์, การบริหารโครงการไอที, การวิเคราะห์และออกแบบระบบเชิงลึก',
+'การฝึกงานทวิภาคีในสถานประกอบการ' =>
+'ปฏิบัติงานร่วมกับบริษัทพันธมิตรอุตสาหกรรมซอฟต์แวร์จริงตลอดปีการศึกษา' ],
+'courses' => [ ['code' => 'BTECH-401', 'name' =>
+'การวิเคราะห์และออกแบบสถาปัตยกรรมซอฟต์แวร์ (Software Architecture)', 'type' =>
+'วิชาชีพเฉพาะ', 'credit' => '3-0-3'], ['code' => 'BTECH-402', 'name' =>
+'การจัดการโครงการเทคโนโลยีสารสนเทศ (IT Project Management)', 'type' =>
+'วิชาชีพเฉพาะ', 'credit' => '2-2-3'], ['code' => 'BTECH-403', 'name' =>
+'ระบบบริหารจัดการฐานข้อมูลระดับองค์กร (Enterprise DBMS)', 'type' =>
+'วิชาชีพเฉพาะ', 'credit' => '2-2-3'], ['code' => 'BTECH-404', 'name' =>
+'ความมั่นคงปลอดภัยไซเบอร์และคลาวด์คอมพิวติ้ง (Cyber Security & Cloud)', 'type'
+=> 'วิชาชีพเฉพาะ', 'credit' => '2-2-3'], ['code' => 'BTECH-405', 'name' =>
+'การปฏิบัติงานทวิภาคีในสถานประกอบการ (Cooperative Education)', 'type' =>
+'ฝึกประสบการณ์', 'credit' => '0-18-6'] ] ] ]; // รายละเอียดวิชาไฮไลท์:
+การพัฒนาเว็บแอปพลิเคชัน (รหัส 21901-2003 / 20901-2003) $web_dev_course_modules =
+[ ['week' => '1', 'title' => 'ภาพรวมของการพัฒนาเว็บแอปพลิเคชัน & เครื่องมือ (VS
+Code, GitHub, XAMPP)', 'hours' => 5], ['week' => '2-3', 'title' =>
+'พื้นฐานโครงสร้าง HTML และการจัดสไตล์ด้วย CSS', 'hours' => 10], ['week' =>
+'4-5', 'title' => 'การใช้ JavaScript และ Event Handling
+เพื่อการโต้ตอบกับผู้ใช้', 'hours' => 10], ['week' => '6-8', 'title' => 'การพัฒนา
+Back-End ด้วยภาษา PHP และสถาปัตยกรรม Client-Server', 'hours' => 15], ['week' =>
+'9-10', 'title' => 'การจัดการและเชื่อมต่อฐานข้อมูล MySQL ด้วย PHP (CRUD
+Operations)', 'hours' => 10], ['week' => '11', 'title' =>
+'การจัดการสถานะผู้ใช้ด้วย Cookies และ Sessions ใน PHP', 'hours' => 5], ['week'
+=> '12', 'title' => 'การจัดการความปลอดภัยและการยืนยันตัวตนด้วย JSON Web Token
+(JWT)', 'hours' => 5], ['week' => '13-14', 'title' =>
+'การพัฒนาเว็บแอปพลิเคชันแบบเต็มรูปแบบ (Full-Stack Web Development)', 'hours' =>
+15], ['week' => '15-16', 'title' => 'การเขียนแผนการทดสอบ (Test Plan) การ
+Debugging และปรับปรุงระบบ', 'hours' => 10], ['week' => '17-18', 'title' => 'การ
+Deploy แอปพลิเคชันขึ้นเซิร์ฟเวอร์และการนำเสนอโปรเจกต์ปลายภาค', 'hours' => 10] ];
+// รับค่าแท็บระดับการศึกษาผ่าน GET parameter (default = pvc) $current_tab =
+isset($_GET['tab']) && array_key_exists($_GET['tab'], $curriculums) ?
+$_GET['tab'] : 'pvc'; $active_curriculum = $curriculums[$current_tab]; ?>
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>แผนกเทคโนโลยีสารสนเทศ - หลักสูตรวิชาการจัดการเรียนการสอน</title>
+    <style>
+      :root {
+        --primary-color: #0d6efd;
+        --primary-dark: #0a58ca;
+        --secondary-color: #0dcaf0;
+        --dark-color: #212529;
+        --light-bg: #f8f9fa;
+        --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+        --transition-speed: 0.3s;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Sarabun", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f4f6f9;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      header {
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        color: #fff;
+        padding: 2.5rem 1.5rem;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      }
+
+      header h1 {
+        font-size: 2.2rem;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+      }
+
+      header p {
+        font-size: 1.1rem;
+        color: #cfd8dc;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .badge-org {
+        display: inline-block;
+        background-color: #ffc107;
+        color: #000;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        margin-bottom: 0.8rem;
+      }
+
+      .container {
+        max-width: 1140px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+      }
+
+      .intro-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 1.8rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--card-shadow);
+        border-left: 5px solid var(--primary-color);
+      }
+
+      .intro-card h2 {
+        color: var(--primary-color);
+        margin-bottom: 0.8rem;
+        font-size: 1.4rem;
+      }
+
+      .career-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .career-tag {
+        background-color: #e7f1ff;
+        color: var(--primary-dark);
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        font-size: 0.88rem;
+        font-weight: 500;
+      }
+
+      /* Nav Tabs */
+      .tabs-nav {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid #dee2e6;
+      }
+
+      .tab-link {
+        padding: 0.8rem 1.5rem;
+        text-decoration: none;
+        color: #495057;
+        font-weight: 600;
+        border-radius: 8px 8px 0 0;
+        background-color: #e9ecef;
+        transition: all var(--transition-speed);
+      }
+
+      .tab-link.active {
+        background-color: var(--primary-color);
+        color: #fff;
+      }
+
+      .tab-link:hover:not(.active) {
+        background-color: #ced4da;
+      }
+
+      /* Curriculum Section */
+      .curriculum-box {
+        background: #fff;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 2rem;
+      }
+
+      .curriculum-header {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e9ecef;
+      }
+
+      .curriculum-header h3 {
+        font-size: 1.6rem;
+        color: var(--dark-color);
+      }
+
+      .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .meta-item {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+      }
+
+      .meta-item strong {
+        display: block;
+        color: #6c757d;
+        font-size: 0.85rem;
+        margin-bottom: 0.2rem;
+      }
+
+      .meta-item span {
+        color: #212529;
+        font-weight: 600;
+      }
+
+      /* Tables */
+      .table-responsive {
+        overflow-x: auto;
+        margin-top: 1.5rem;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      th,
+      td {
+        padding: 0.9rem;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      th {
+        background-color: #f1f3f5;
+        color: #495057;
+        font-weight: 700;
+      }
+
+      tr:hover {
+        background-color: #f8f9fa;
+      }
+
+      .badge-type {
+        background-color: #6c757d;
+        color: white;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.78rem;
+      }
+
+      /* Highlight Section */
+      .highlight-section {
+        background: #fff;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: var(--card-shadow);
+        border-top: 5px solid #198754;
+      }
+
+      .highlight-section h3 {
+        color: #198754;
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+      }
+
+      .modules-list {
+        list-style: none;
+        margin-top: 1rem;
+      }
+
+      .module-item {
+        display: flex;
+        align-items: center;
+        padding: 0.8rem;
+        border-bottom: 1px solid #f1f3f5;
+      }
+
+      .module-week {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        font-weight: bold;
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        min-width: 110px;
+        text-align: center;
+        margin-right: 1rem;
+        font-size: 0.85rem;
+      }
+
+      .module-title {
+        flex-grow: 1;
+        font-weight: 500;
+      }
+
+      .module-hours {
+        color: #6c757d;
+        font-size: 0.85rem;
+      }
+
+      footer {
+        text-align: center;
+        padding: 2rem 1rem;
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-top: 3rem;
+        border-top: 1px solid #dee2e6;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <span class="badge-org"
+        ><?php echo htmlspecialchars($department['organization']); ?></span
+      >
+      <h1><?php echo htmlspecialchars($department['name_th']); ?></h1>
+      <p><?php echo htmlspecialchars($department['name_en']); ?></p>
+    </header>
+
+    <div class="container">
+      <!-- แนะนำสาขาวิชา -->
+      <div class="intro-card">
+        <h2>วิศวกรรมการเรียนรู้และสายงานอาชีพ</h2>
+        <p><?php echo htmlspecialchars($department['description']); ?></p>
+        <div class="career-tags">
+          <?php foreach ($department['careers'] as $career): ?>
+          <span class="career-tag"
+            >💼 <?php echo htmlspecialchars($career); ?></span
+          >
+          <?php endforeach; ?>
+        </div>
+      </div>
+
+      <!-- แท็บเลือกระดับการศึกษา -->
+      <div class="tabs-nav">
+        <a
+          href="?tab=pvc"
+          class="tab-link <?php echo $current_tab === 'pvc' ? 'active' : ''; ?>"
+          >ระดับ ปวช. (พ.ศ. 2567)</a
+        >
+        <a
+          href="?tab=pvs"
+          class="tab-link <?php echo $current_tab === 'pvs' ? 'active' : ''; ?>"
+          >ระดับ ปวส. (พ.ศ. 2567)</a
+        >
+        <a
+          href="?tab=tlb"
+          class="tab-link <?php echo $current_tab === 'tlb' ? 'active' : ''; ?>"
+          >ระดับ ปริญญาตรี (ทล.บ.)</a
+        >
+      </div>
+
+      <!-- กล่องข้อมูลหลักสูตรที่เลือก -->
+      <div class="curriculum-box">
+        <div class="curriculum-header">
+          <h3><?php echo htmlspecialchars($active_curriculum['title']); ?></h3>
+          <p style="color: #6c757d; font-size: 0.95rem; margin-top: 0.3rem">
+            <?php echo htmlspecialchars($active_curriculum['sub_title']); ?>
+          </p>
+
+          <div class="meta-grid">
+            <div class="meta-item">
+              <strong>จำนวนหน่วยกิตตลอดหลักสูตร:</strong>
+              <span
+                ><?php echo htmlspecialchars($active_curriculum['credits']); ?></span
+              >
+            </div>
+            <div class="meta-item">
+              <strong>ระยะเวลาศึกษา / พื้นฐาน:</strong>
+              <span
+                ><?php echo htmlspecialchars($active_curriculum['duration']); ?></span
+              >
+            </div>
+            <div class="meta-item">
+              <strong>เป้าหมายคุณวุฒิอาชีพ:</strong>
+              <span
+                ><?php echo htmlspecialchars($active_curriculum['qualification']); ?></span
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- โครงสร้างหมวดวิชา -->
+        <h4 style="margin-bottom: 0.8rem; color: #495057">
+          📌 โครงสร้างหมวดวิชาหลัก
+        </h4>
+        <div
+          class="table-responsive"
+          style="margin-top: 0; margin-bottom: 1.5rem"
+        >
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 35%">หมวดวิชา</th>
+                <th>รายละเอียดการจัดวิชาเรียน</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($active_curriculum['structure'] as $category =>
+              $detail): ?>
+              <tr>
+                <td>
+                  <strong><?php echo htmlspecialchars($category); ?></strong>
+                </td>
+                <td><?php echo htmlspecialchars($detail); ?></td>
+              </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- รายวิชาสำคัญในหลักสูตร -->
+        <h4 style="margin-bottom: 0.8rem; color: #495057">
+          📚 รายวิชาหลักและวิชาเฉพาะในหลักสูตร
+        </h4>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>รหัสวิชา</th>
+                <th>ชื่อรายวิชา (Subject Name)</th>
+                <th>กลุ่มวิชา</th>
+                <th>ทฤษฎี-ปฏิบัติ-หน่วยกิต</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($active_curriculum['courses'] as $course): ?>
+              <tr>
+                <td>
+                  <code><?php echo htmlspecialchars($course['code']); ?></code>
+                </td>
+                <td>
+                  <strong
+                    ><?php echo htmlspecialchars($course['name']); ?></strong
+                  >
+                </td>
+                <td>
+                  <span class="badge-type"
+                    ><?php echo htmlspecialchars($course['type']); ?></span
+                  >
+                </td>
+                <td><?php echo htmlspecialchars($course['credit']); ?></td>
+              </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ไฮไลท์วิชาเฉพาะ: การพัฒนาเว็บแอปพลิเคชัน -->
+      <div class="highlight-section">
+        <h3>
+          🌐 รายวิชาไฮไลท์: การพัฒนาเว็บแอปพลิเคชัน (Web Based Application
+          Development)
+        </h3>
+        <p>
+          <strong
+            >รหัสวิชา 21901-2003 / 20901-2003 (3 หน่วยกิต 5
+            ชั่วโมง/สัปดาห์)</strong
+          >
+          | รายวิชาตามมาตรฐานอาชีพนักพัฒนาระบบ ระดับ 3
+        </p>
+
+        <ul class="modules-list">
+          <?php foreach ($web_dev_course_modules as $mod): ?>
+          <li class="module-item">
+            <span class="module-week"
+              >สัปดาห์ที่ <?php echo htmlspecialchars($mod['week']); ?></span
+            >
+            <span class="module-title"
+              ><?php echo htmlspecialchars($mod['title']); ?></span
+            >
+            <span class="module-hours"
+              >⏱️ <?php echo htmlspecialchars($mod['hours']); ?> ชั่วโมง</span
+            >
+          </li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
+    </div>
+
+    <footer>
+      <p>
+        &copy; <?php echo date('Y'); ?> แผนกเทคโนโลยีสารสนเทศ -
+        สถาบันการอาชีวศึกษา สำนักงานคณะกรรมการการอาชีวศึกษา
+      </p>
+      <p style="font-size: 0.8rem; margin-top: 0.3rem">
+        จัดทำด้วยภาษา PHP 8.x เพื่อการแสดงผลข้อมูลแผนการเรียนแบบ Dynamic Web
+        Page
+      </p>
+    </footer>
+  </body>
+</html>
